@@ -1,16 +1,9 @@
 const express = require('express');
 const pick = require('lodash/pick');
 const router = express.Router();
-const knex = require('knex')({
-  client: 'pg',
-  connection: {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 5432,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-  }
-});
+const knex = require('../plugins/knexConfig');
+
+knex();
 
 router.get('/', async (req, res) => {
   try {
@@ -38,20 +31,21 @@ router.get('/login', async (req, res) => {
       .where({ name })
       .then(data => data[0]);
 
-    if (user && password === user.password){
-
+    if (!user) {
+      res.status(200).send('Такого пользователя не существует');
+    } else if (user && password === user.password) {
       res.json({
         token: "123",
       });
     } else {
-      res.status(200).send('Не правильное имя или пароль');
+      res.status(200).send('Не верный пароль');
     }
   } catch (e) {
     res.status(400).send(e.message);
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/create-user', async (req, res) => {
   try {
     const data = pick(req.body, 'name', 'password', 'mail', 'phone');
     const [id] = await knex('users').insert(data).returning('id');
