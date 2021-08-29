@@ -1,0 +1,22 @@
+{
+  "name": "actors-agency",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "knex": "^0.21.21",
+    "lodash": "^4.17.21",
+    "nodemon": "^2.0.12",
+    "pg": "^8.7.1",
+    "cors": "^2.8.5"
+  }
+}
